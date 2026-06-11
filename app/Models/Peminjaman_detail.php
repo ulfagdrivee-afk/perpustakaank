@@ -20,6 +20,7 @@ class Peminjaman_detail extends Model
     }
     public function buku()
     {
-        return $this->anggota(Buku::class, 'buku_id');
+        return $this->belongsTo(Buku::class, 'buku_id');
     }
+
 }

@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
-class PengembalianController extends Controller
+class BukuController extends Controller
 {
     public function index()
     {
-        $buku = Buku::with('kategori_id','penerbit_id')->get();
+        $buku = Buku::with('kategori','penerbit')->get();
         $data = $buku->map(function($buku) {
             return [
                 'id' => $buku->id,
                 'kode_buku' => $buku->kode_buku,
                 'judul' => $buku->judul,
-                'kategori_id' => $buku->kategori_id,
-                'penerbit_id' => $buku->penerbit_id,
+                // 'kategori_id' => $buku->kategori_id,
+                'kategori_name' => $buku->kategori->nama_kategori ?? null,
+                // 'penerbit_id' => $buku->penerbit_id,
+                'penerbit_name' => $buku->penerbit->nama_penerbit ?? null,
                 'isbn' => $buku->isbn,
                 'pengarang' => $buku->pengarang,
                 'jumlah_halaman' => $buku->jumlah_halaman,
@@ -48,7 +51,7 @@ class PengembalianController extends Controller
             'jumlah_stok' => 'required|integer|min:1',
             'tahun_terbit' => 'required|integer|min:1',
             'sinopsis' => 'required|string',
-             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:100000',
         ]);
 
         if($validator->fails()){
@@ -74,6 +77,7 @@ class PengembalianController extends Controller
         ]);
     if ($request->hasFile('gambar')) { 
         $file = $request->file('gambar')->store('images', 'public'); 
+
         return response()->json([
             'message' => 'Create Buku Successful',
             'data' => $buku
@@ -109,8 +113,17 @@ class PengembalianController extends Controller
         } 
 
           $validator = Validator::make($request->all(), [
-             'peminjaman_id' => 'required|exists:peminjamans,id',
-            'tanggal_kembali' => 'required|date',
+                'kode_buku' => 'required|string|max:10',
+            'judul' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'penerbit_id' => 'required|exists:penerbits,id',
+            'isbn' => 'required|string|max:255',
+            'pengarang' => 'required|string|max:255',
+            'jumlah_halaman' => 'required|integer|min:1',
+            'jumlah_stok' => 'required|integer|min:1',
+            'tahun_terbit' => 'required|integer|min:1',
+            'sinopsis' => 'required|string',
+             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:100000',
         ]);
 
         if($validator->fails()){
@@ -134,8 +147,8 @@ class PengembalianController extends Controller
             'gambar' => $request->gambar,
         ]);
         if ($request->hasFile('gambar')) { 
-            if ($post->gambar) { 
-                Storage::disk('public')->delete($post->gambar); 
+            if ($buku->gambar) { 
+                Storage::disk('public')->delete($buku->gambar); 
             } 
             $file = $request->file('gambar')->store('images', 'public'); 
             $data['gambar'] = $file; 

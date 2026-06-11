@@ -9,7 +9,7 @@ class PengembalianController extends Controller
 {
     public function index()
     {
-        $pengembalian = Pengembalian::with('user_id','pemiinjaman_id')->get();
+        $pengembalian = Pengembalian::with('user','peminjaman')->get();
         $data = $pengembalian->map(function($pengembalian) {
             return [
                 'id' => $pengembalian->id,
@@ -30,7 +30,7 @@ class PengembalianController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'peminjaman_id' => 'required|exists:peminjamans,id',
+            'peminjaman_id' => 'required|exists:peminjamen,id',
             'tanggal_kembali' => 'required|date',
         ]);
 
@@ -42,10 +42,10 @@ class PengembalianController extends Controller
             ], 422);
         }
 
-        $pengembalian = Peminjaman::create([
+        $pengembalian = Pengembalian::create([
               'peminjaman_id' => $request->peminjaman_id,
             'tanggal_kembali' => $request->tanggal_kembali,
-            'user_id' =>Auth()->id(),
+            'user_id' => auth()->id(),
         ]);
 
         return response()->json([
@@ -83,7 +83,7 @@ class PengembalianController extends Controller
         } 
 
           $validator = Validator::make($request->all(), [
-             'peminjaman_id' => 'required|exists:peminjamans,id',
+             'peminjaman_id' => 'required|exists:peminjamen,id',
             'tanggal_kembali' => 'required|date',
         ]);
 
@@ -97,7 +97,7 @@ class PengembalianController extends Controller
         $pengembalian->update([
             'peminjaman_id' => $request->peminjaman_id,
             'tanggal_kembali' => $request->tanggal_kembali,
-            'user_id' =>Auth()->id(),
+            'user_id' => auth()->id(),
 
         ]);
 

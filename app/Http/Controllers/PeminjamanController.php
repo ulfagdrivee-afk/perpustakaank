@@ -9,7 +9,7 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjaman = Peminjaman::with('user_id','anggota_id')->get();
+        $peminjaman = Peminjaman::with('user','anggota')->get();
         $data = $peminjaman->map(function($peminjaman) {
             return [
                 'id' => $peminjaman->id,
@@ -17,9 +17,11 @@ class PeminjamanController extends Controller
                 'lama_pinjam' => $peminjaman->lama_pinjam,
                 'keterangan' => $peminjaman->keterangan,
                 'status' => $peminjaman->status,
-                'anggota_id' => $peminjaman->anggota_id,
-                'user_id' => $peminjaman->user_id,
-                  'created_at' => $peminjaman->created_at,
+                // 'anggota_id' => $peminjaman->anggota_id,
+                'anggota_nama' => $peminjaman->anggota->nama ?? null,
+                // 'user_id' => $peminjaman->user_id,
+                'user_nama' => $peminjaman->user->nama ?? null,
+                'created_at' => $peminjaman->created_at,
                 'updated_at' => $peminjaman->updated_at,
             ];
     });
@@ -53,7 +55,7 @@ class PeminjamanController extends Controller
             'lama_pinjam' => $request->lama_pinjam,
             'keterangan' => $request->keterangan,
             'status' => $request->status,
-            'user_id' =>Auth()->id(),
+            'user_id' => auth()->id(),
             'anggota_id' => $request->anggota_id,
         ]);
 
@@ -111,7 +113,7 @@ class PeminjamanController extends Controller
             'lama_pinjam' => $request->lama_pinjam,
             'keterangan' => $request->keterangan,
             'status' => $request->status,
-            'user_id' =>Auth()->id(),
+            'user_id' =>auth()->id(),
             'anggota_id' => $request->anggota_id,
 
         ]);

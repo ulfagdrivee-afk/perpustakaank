@@ -23,6 +23,6 @@ class Peminjaman extends Model
     }
     public function anggota()
     {
-        return $this->anggota(Anggota::class, 'anggota_id');
+        return $this->belongsTo(Anggota::class, 'anggota_id');
     }
 }

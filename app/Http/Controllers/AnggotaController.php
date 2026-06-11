@@ -74,7 +74,7 @@ class AnggotaController extends Controller
 
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $anggota = Anggota::find($id); 
         if (!$anggota) { 
@@ -114,8 +114,8 @@ class AnggotaController extends Controller
             'foto' => $request->foto,
         ]);
           if ($request->hasFile('foto')) { 
-            if ($post->foto) { 
-                Storage::disk('public')->delete($post->foto); 
+            if ($anggota->foto) { 
+                Storage::disk('public')->delete($anggota->foto); 
             } 
             $file = $request->file('foto')->store('images', 'public'); 
             $data['foto'] = $file; 

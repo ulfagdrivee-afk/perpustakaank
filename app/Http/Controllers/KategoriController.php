@@ -60,7 +60,7 @@ class KategoriController extends Controller
 
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $kategori = Kategori::find($id); 
         if (!$kategori) { 

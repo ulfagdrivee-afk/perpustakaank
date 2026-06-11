@@ -28,6 +28,11 @@ class Buku extends Model
     }
     public function penerbit()
     {
-        return $this->anggota(Penerbit::class, 'penerbit_id');
+        return $this->belongsTo(Penerbit::class, 'penerbit_id');
+    }
+
+    public function peminjaman_detail()
+    {
+        return $this->hasMany(Peminjaman_detail::class, 'buku_id');
     }
 }

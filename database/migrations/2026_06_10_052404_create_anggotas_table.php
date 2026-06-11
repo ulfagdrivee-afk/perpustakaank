@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('anggotas', function (Blueprint $table) {
-            $table->id();
+               $table->id();
             $table->string('kode_anggota');
             $table->string('nama', 255);
             $table->enum('jenis_kelamin', ['pria','wanita']);
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('telepon');
             $table->string('alamat');
-            $table->string('gambar', 255);
+            $table->string('foto', 255);
             $table->timestamps();
         });
     }

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('jumlah_halaman');
             $table->integer('jumlah_stok');
             $table->integer('tahun_terbit');
-            $table->string('text');
+            $table->string('sinopsis');
             $table->string('gambar', 255);
             $table->timestamps();
         });

@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengembalians', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('peminjaman_id')->constrained()->cascade('onDelete');
+             $table->id();
+            $table->foreignId('peminjaman_id')->constrained()->onDelete('cascade');
             $table->date('tanggal_kembali');
-            $table->foreignId('user_id')->constrained()->cascade('onDelete');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -20,6 +20,6 @@ class Pengembalian extends Model
     }
     public function peminjaman()
     {
-        return $this->anggota(Peminjaman::class, 'peminjaman_id');
+        return $this->belongsTo(Peminjaman::class, 'peminjaman_id');
     }
 }
